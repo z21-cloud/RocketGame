@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
@@ -14,6 +13,9 @@ public class RocketControls : MonoBehaviour
     [SerializeField] private AudioClip flySound;
     [SerializeField] private AudioClip boomSound;
     [SerializeField] private AudioClip winSound;
+    [SerializeField] private ParticleSystem flyParticle;
+    [SerializeField] private ParticleSystem winParticle;
+    [SerializeField] private ParticleSystem deathParticle;
 
     private enum State
     {
@@ -63,6 +65,7 @@ public class RocketControls : MonoBehaviour
                 state = State.Win;
                 audioSource.Stop();
                 audioSource.PlayOneShot(winSound);
+                winParticle.Play();
                 StartCoroutine(LoadLevelWithDelay(1));
                 break;
             default:
@@ -70,6 +73,7 @@ public class RocketControls : MonoBehaviour
                 audioSource.Stop();
                 audioSource.PlayOneShot(boomSound);
                 input.Disable(); // Отключаем Input Actions
+                deathParticle.Play();
                 StartCoroutine(LoadLevelWithDelay(0));
                 break;
         }
@@ -86,15 +90,14 @@ public class RocketControls : MonoBehaviour
     {
         if (input.Player.MoveUp.IsPressed())
         {
+            flyParticle.Play();
             rb.AddRelativeForce(Vector3.up * speed, ForceMode.Force);
-            if (!audioSource.isPlaying)
-            {
-                audioSource.PlayOneShot(flySound);
-            }
+            if (!audioSource.isPlaying) audioSource.PlayOneShot(flySound);
         }
         else
         {
             audioSource.Pause();
+            flyParticle.Stop();
         }
     }
 
