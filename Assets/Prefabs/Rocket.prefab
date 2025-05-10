@@ -431,7 +431,7 @@ GameObject:
   - component: {fileID: 6481482569766160822}
   - component: {fileID: 8326022332166468227}
   - component: {fileID: 7182660584574454661}
-  - component: {fileID: 2390462961934633898}
+  - component: {fileID: 8533134694105858453}
   m_Layer: 0
   m_Name: Rocket
   m_TagString: Untagged
@@ -448,7 +448,7 @@ Transform:
   m_GameObject: {fileID: 6554067337192835393}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30.564, y: 0.938, z: -3.399}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.57574, y: 0.57574, z: 0.57574}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -499,10 +499,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4000
   rotationSpeed: 50
-  audioSource: {fileID: 0}
-  startPoint: {fileID: 7875726343697558278, guid: 68df982b9539e294eba5ea44148cdc58, type: 3}
-  rocketPrefab: {fileID: 6554067337192835393}
---- !u!82 &2390462961934633898
+  flySound: {fileID: 8300000, guid: 092b8cf044b35bb4bbf8b8e76d5a7a7e, type: 3}
+  boomSound: {fileID: 8300000, guid: 366198e43f77bf14a98c06f3115758ba, type: 3}
+  winSound: {fileID: 8300000, guid: 9efc2ab81ba5e2b41a9c4e36a6868b90, type: 3}
+--- !u!82 &8533134694105858453
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -512,9 +512,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 84599ba920534e043a9c85b4e7286934, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.175
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -522,7 +522,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 42.725357
+  MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0

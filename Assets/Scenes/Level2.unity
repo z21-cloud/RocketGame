@@ -1346,7 +1346,7 @@ GameObject:
   - component: {fileID: 621135247}
   m_Layer: 0
   m_Name: EndGame
-  m_TagString: Safe
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6056,6 +6056,10 @@ PrefabInstance:
       propertyPath: rocketPrefab
       value: 
       objectReference: {fileID: 6554067337192835393, guid: ce6f9651573d47c479aae8404a50f520, type: 3}
+    - target: {fileID: 8326022332166468227, guid: ce6f9651573d47c479aae8404a50f520, type: 3}
+      propertyPath: m_Mass
+      value: 2000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
