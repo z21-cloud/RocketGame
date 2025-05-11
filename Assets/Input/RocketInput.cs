@@ -53,6 +53,24 @@ public partial class @RocketInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LoadLevel"",
+                    ""type"": ""Button"",
+                    ""id"": ""4b94b847-26ff-4fd7-a45b-4acf3abbc835"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GodMove"",
+                    ""type"": ""Button"",
+                    ""id"": ""b8c6c92b-5b0a-4f64-820f-2e476df21cc7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -110,6 +128,28 @@ public partial class @RocketInput: IInputActionCollection2, IDisposable
                     ""action"": ""MouseClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d064947-57cf-470b-a745-2d58558ce66c"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LoadLevel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""95ae56e2-981e-49c5-aa14-8cd499879caa"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GodMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -121,6 +161,8 @@ public partial class @RocketInput: IInputActionCollection2, IDisposable
         m_Player_MoveUp = m_Player.FindAction("MoveUp", throwIfNotFound: true);
         m_Player_Rotate = m_Player.FindAction("Rotate", throwIfNotFound: true);
         m_Player_MouseClick = m_Player.FindAction("MouseClick", throwIfNotFound: true);
+        m_Player_LoadLevel = m_Player.FindAction("LoadLevel", throwIfNotFound: true);
+        m_Player_GodMove = m_Player.FindAction("GodMove", throwIfNotFound: true);
     }
 
     ~@RocketInput()
@@ -190,6 +232,8 @@ public partial class @RocketInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MoveUp;
     private readonly InputAction m_Player_Rotate;
     private readonly InputAction m_Player_MouseClick;
+    private readonly InputAction m_Player_LoadLevel;
+    private readonly InputAction m_Player_GodMove;
     public struct PlayerActions
     {
         private @RocketInput m_Wrapper;
@@ -197,6 +241,8 @@ public partial class @RocketInput: IInputActionCollection2, IDisposable
         public InputAction @MoveUp => m_Wrapper.m_Player_MoveUp;
         public InputAction @Rotate => m_Wrapper.m_Player_Rotate;
         public InputAction @MouseClick => m_Wrapper.m_Player_MouseClick;
+        public InputAction @LoadLevel => m_Wrapper.m_Player_LoadLevel;
+        public InputAction @GodMove => m_Wrapper.m_Player_GodMove;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -215,6 +261,12 @@ public partial class @RocketInput: IInputActionCollection2, IDisposable
             @MouseClick.started += instance.OnMouseClick;
             @MouseClick.performed += instance.OnMouseClick;
             @MouseClick.canceled += instance.OnMouseClick;
+            @LoadLevel.started += instance.OnLoadLevel;
+            @LoadLevel.performed += instance.OnLoadLevel;
+            @LoadLevel.canceled += instance.OnLoadLevel;
+            @GodMove.started += instance.OnGodMove;
+            @GodMove.performed += instance.OnGodMove;
+            @GodMove.canceled += instance.OnGodMove;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -228,6 +280,12 @@ public partial class @RocketInput: IInputActionCollection2, IDisposable
             @MouseClick.started -= instance.OnMouseClick;
             @MouseClick.performed -= instance.OnMouseClick;
             @MouseClick.canceled -= instance.OnMouseClick;
+            @LoadLevel.started -= instance.OnLoadLevel;
+            @LoadLevel.performed -= instance.OnLoadLevel;
+            @LoadLevel.canceled -= instance.OnLoadLevel;
+            @GodMove.started -= instance.OnGodMove;
+            @GodMove.performed -= instance.OnGodMove;
+            @GodMove.canceled -= instance.OnGodMove;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -250,5 +308,7 @@ public partial class @RocketInput: IInputActionCollection2, IDisposable
         void OnMoveUp(InputAction.CallbackContext context);
         void OnRotate(InputAction.CallbackContext context);
         void OnMouseClick(InputAction.CallbackContext context);
+        void OnLoadLevel(InputAction.CallbackContext context);
+        void OnGodMove(InputAction.CallbackContext context);
     }
 }

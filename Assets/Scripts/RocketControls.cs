@@ -24,6 +24,7 @@ public class RocketControls : MonoBehaviour
         Win
     }
 
+    private bool collisionOff = false;
     private State state = State.Playing;
     private RocketInput input;
     private Rigidbody rb;
@@ -46,11 +47,25 @@ public class RocketControls : MonoBehaviour
             RocketLaunch();
             RocketRotation();
         }
+        DebugKey();
+    }
+
+    private void DebugKey()
+    {
+        if(input.Player.LoadLevel.triggered)
+        {
+            Win();
+        }
+        else if(input.Player.GodMove.triggered)
+        {
+            collisionOff = !collisionOff;
+            Debug.Log($"Godmode active: {collisionOff}");
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (state != State.Playing) return;
+        if (state != State.Playing || collisionOff) return;
 
         switch (collision.gameObject.tag)
         {
