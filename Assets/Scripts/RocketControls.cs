@@ -62,21 +62,31 @@ public class RocketControls : MonoBehaviour
                 Destroy(collision.gameObject);
                 break;
             case "Finish":
-                state = State.Win;
-                audioSource.Stop();
-                audioSource.PlayOneShot(winSound);
-                winParticle.Play();
-                StartCoroutine(LoadLevelWithDelay(1));
+                Win();
                 break;
             default:
-                state = State.Death;
-                audioSource.Stop();
-                audioSource.PlayOneShot(boomSound);
-                input.Disable(); // Отключаем Input Actions
-                deathParticle.Play();
-                StartCoroutine(LoadLevelWithDelay(0));
+                Lose();
                 break;
         }
+    }
+
+    private void Lose()
+    {
+        state = State.Death;
+        audioSource.Stop();
+        audioSource.PlayOneShot(boomSound);
+        deathParticle.Play();
+        StartCoroutine(LoadLevelWithDelay(0));
+        input.Disable(); // Отключаем Input Actions
+    }
+
+    private void Win()
+    {
+        state = State.Win;
+        audioSource.Stop();
+        audioSource.PlayOneShot(winSound);
+        winParticle.Play();
+        StartCoroutine(LoadLevelWithDelay(1));
     }
 
     private IEnumerator LoadLevelWithDelay(int sceneID, float delay = 2.5f)
