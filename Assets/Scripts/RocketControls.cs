@@ -1,14 +1,16 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class RocketControls : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI energyText;
     [SerializeField] private float speed = 10f;
+    [SerializeField] private int energy = 2000;
     [SerializeField] private float rotationSpeed = 25f;
     [SerializeField] private AudioClip flySound;
     [SerializeField] private AudioClip boomSound;
@@ -73,8 +75,7 @@ public class RocketControls : MonoBehaviour
                 Debug.Log("Fine");
                 break;
             case "Battery":
-                Debug.Log("+1 energy");
-                Destroy(collision.gameObject);
+                AddEnergy(collision);
                 break;
             case "Finish":
                 Win();
@@ -85,13 +86,21 @@ public class RocketControls : MonoBehaviour
         }
     }
 
+    private void AddEnergy(Collision collision)
+    {
+        energy += 100;
+        energyText.text = energy.ToString();
+        Debug.Log("ADDED ENERGY");
+        Destroy(collision.gameObject);
+    }
+
     private void Lose()
     {
         state = State.Death;
         audioSource.Stop();
         audioSource.PlayOneShot(boomSound);
         deathParticle.Play();
-        StartCoroutine(LoadLevelWithDelay(0));
+        StartCoroutine(LoadLevelWithDelay(1));
         input.Disable(); // Отключаем Input Actions
     }
 
@@ -101,7 +110,7 @@ public class RocketControls : MonoBehaviour
         audioSource.Stop();
         audioSource.PlayOneShot(winSound);
         winParticle.Play();
-        StartCoroutine(LoadLevelWithDelay(1));
+        StartCoroutine(LoadLevelWithDelay(2));
     }
 
     private IEnumerator LoadLevelWithDelay(int sceneID, float delay = 2.5f)
@@ -113,8 +122,11 @@ public class RocketControls : MonoBehaviour
 
     private void RocketLaunch()
     {
-        if (input.Player.MoveUp.IsPressed())
+        if (input.Player.MoveUp.IsPressed() && energy > 0)
         {
+            energy -= Mathf.RoundToInt(Random.Range(100, 501) * Time.deltaTime);
+            Debug.Log(energy);
+            energyText.text = energy.ToString();
             flyParticle.Play();
             rb.AddRelativeForce(Vector3.up * speed, ForceMode.Force);
             if (!audioSource.isPlaying) audioSource.PlayOneShot(flySound);
