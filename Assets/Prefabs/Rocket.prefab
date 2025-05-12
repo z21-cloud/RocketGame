@@ -526,6 +526,12 @@ GameObject:
   - component: {fileID: 8326022332166468227}
   - component: {fileID: 7182660584574454661}
   - component: {fileID: 8533134694105858453}
+  - component: {fileID: 1384786669349944355}
+  - component: {fileID: 4611700413931692639}
+  - component: {fileID: 2013208511096569984}
+  - component: {fileID: 3646951928338724386}
+  - component: {fileID: 4662524103483487278}
+  - component: {fileID: 5045512021082260407}
   m_Layer: 0
   m_Name: Rocket
   m_TagString: Untagged
@@ -595,14 +601,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d5787cd2a313524fa03a9155fbd5cf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 100
-  rotationSpeed: 50
-  flySound: {fileID: 8300000, guid: 092b8cf044b35bb4bbf8b8e76d5a7a7e, type: 3}
-  boomSound: {fileID: 8300000, guid: 366198e43f77bf14a98c06f3115758ba, type: 3}
-  winSound: {fileID: 8300000, guid: 9efc2ab81ba5e2b41a9c4e36a6868b90, type: 3}
-  flyParticle: {fileID: 6168634883679455511}
-  winParticle: {fileID: 5859605514264538854}
-  deathParticle: {fileID: 746272816861753333}
+  energySystem: {fileID: 4611700413931692639}
+  gameStateManager: {fileID: 0}
 --- !u!82 &8533134694105858453
 AudioSource:
   m_ObjectHideFlags: 0
@@ -699,6 +699,93 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1384786669349944355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6554067337192835393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8894aaddffa28a44e94d895d50bffd34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 500
+  rotationSpeed: 100
+  inputManager: {fileID: 4662524103483487278}
+  particleManager: {fileID: 3646951928338724386}
+  energySystem: {fileID: 4611700413931692639}
+  gameStateManager: {fileID: 0}
+--- !u!114 &4611700413931692639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6554067337192835393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f389b12edc104cb499db083580ad6661, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energy: 2000
+  energyText: {fileID: 0}
+--- !u!114 &2013208511096569984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6554067337192835393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4579811046e37824a9f1a08af3a13fa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flySound: {fileID: 8300000, guid: 092b8cf044b35bb4bbf8b8e76d5a7a7e, type: 3}
+  boomSound: {fileID: 8300000, guid: 366198e43f77bf14a98c06f3115758ba, type: 3}
+  winSound: {fileID: 8300000, guid: 9efc2ab81ba5e2b41a9c4e36a6868b90, type: 3}
+--- !u!114 &3646951928338724386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6554067337192835393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 835e7d687c48ccc4a99b26338502b614, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flyParticle: {fileID: 6168634883679455511}
+  winParticle: {fileID: 5859605514264538854}
+  deathParticle: {fileID: 746272816861753333}
+--- !u!114 &4662524103483487278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6554067337192835393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28bc3893d9e1e004c9ebbdd1ec88f272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5045512021082260407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6554067337192835393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5415b246272267489cc9a13546c8956, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energyText: {fileID: 0}
 --- !u!1001 &620196055808549173
 PrefabInstance:
   m_ObjectHideFlags: 0

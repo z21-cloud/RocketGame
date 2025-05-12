@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ICollisionHandler
+public interface ISceneLoader
 {
-    void HandleCollision(Collision collision);
+    void LoadScene(int sceneId);
 }

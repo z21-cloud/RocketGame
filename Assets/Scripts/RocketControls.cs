@@ -2,57 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
-using TMPro;
 
 public class RocketControls : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI energyText;
-    [SerializeField] private float speed = 10f;
-    [SerializeField] private int energy = 2000;
-    [SerializeField] private float rotationSpeed = 25f;
-    [SerializeField] private AudioClip flySound;
-    [SerializeField] private AudioClip boomSound;
-    [SerializeField] private AudioClip winSound;
-    [SerializeField] private ParticleSystem flyParticle;
-    [SerializeField] private ParticleSystem winParticle;
-    [SerializeField] private ParticleSystem deathParticle;
+    [SerializeField] private EnergySystem energySystem; 
+    [SerializeField] private GameStateManager gameStateManager;
+    private Dictionary<string, ICollisionHandler> collisionHandlers;
 
-    private enum State
+    private void Start()
     {
-        Playing,
-        Death,
-        Win
-    }
-
-    private bool collisionOff = false;
-    private State state = State.Playing;
-    private RocketInput input;
-    private Rigidbody rb;
-    private AudioSource audioSource;
-    // Start is called before the first frame update
-    private void Awake()
-    {
-        state = State.Playing;
-        audioSource = GetComponent<AudioSource>();
-        rb = GetComponent<Rigidbody>();
-        input = new RocketInput();
-        input.Player.Enable();
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        if (state == State.Playing)
+        collisionHandlers = new Dictionary<string, ICollisionHandler>
         {
-            RocketLaunch();
-            RocketRotation();
-        }
-        DebugKey();
+            { "Battery", new BatteryCollisionHandler(energySystem) },
+            { "Finish", new FinishHandler(gameStateManager) },
+            { "Dangerous", new  DangerousHandler(gameStateManager) }
+        };
     }
 
-    private void DebugKey()
+    /*private void DebugKey()
     {
         if(input.Player.LoadLevel.triggered)
         {
@@ -63,100 +31,13 @@ public class RocketControls : MonoBehaviour
             collisionOff = !collisionOff;
             Debug.Log($"Godmode active: {collisionOff}");
         }
-    }
+    }*/
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (state != State.Playing || collisionOff) return;
-
-        switch (collision.gameObject.tag)
+        if (collisionHandlers.TryGetValue(collision.gameObject.tag, out var handler))
         {
-            case "Safe":
-                Debug.Log("Fine");
-                break;
-            case "Battery":
-                AddEnergy(collision);
-                break;
-            case "Finish":
-                Win();
-                break;
-            default:
-                Lose();
-                break;
+            handler.HandleCollision(collision);
         }
-    }
-
-    private void AddEnergy(Collision collision)
-    {
-        energy += 100;
-        energyText.text = energy.ToString();
-        Debug.Log("ADDED ENERGY");
-        Destroy(collision.gameObject);
-    }
-
-    private void Lose()
-    {
-        state = State.Death;
-        audioSource.Stop();
-        audioSource.PlayOneShot(boomSound);
-        deathParticle.Play();
-        StartCoroutine(LoadLevelWithDelay(1));
-        input.Disable(); // Отключаем Input Actions
-    }
-
-    private void Win()
-    {
-        state = State.Win;
-        audioSource.Stop();
-        audioSource.PlayOneShot(winSound);
-        winParticle.Play();
-        StartCoroutine(LoadLevelWithDelay(2));
-    }
-
-    private IEnumerator LoadLevelWithDelay(int sceneID, float delay = 2.5f)
-    {
-        yield return new WaitForSeconds(delay);
-        SceneManager.LoadScene(sceneID);
-        Destroy(this.gameObject);
-    }
-
-    private void RocketLaunch()
-    {
-        if (input.Player.MoveUp.IsPressed() && energy > 0)
-        {
-            energy -= Mathf.RoundToInt(Random.Range(100, 501) * Time.deltaTime);
-            Debug.Log(energy);
-            energyText.text = energy.ToString();
-            flyParticle.Play();
-            rb.AddRelativeForce(Vector3.up * speed, ForceMode.Force);
-            if (!audioSource.isPlaying) audioSource.PlayOneShot(flySound);
-        }
-        else
-        {
-            audioSource.Pause();
-            flyParticle.Stop();
-        }
-    }
-
-    private void RocketRotation()
-    {
-        rb.freezeRotation = true;
-        if (input.Player.Rotate.IsPressed())
-        {
-            float direction = input.Player.Rotate.ReadValue<float>();
-            float angle = direction * rotationSpeed * Time.deltaTime;
-            transform.Rotate(0, 0, angle);
-        }
-        rb.freezeRotation = false;
-    }
-
-    private void OnEnable()
-    {
-        input.Enable();
-    }
-
-    private void OnDisable()
-    {
-        input.Disable();
     }
 }
